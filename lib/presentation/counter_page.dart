@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final counterBloc = BlocProvider.of<CounterBloc>(context);
+    final counterBloc = BlocProvider.of(context) as CounterBloc;
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

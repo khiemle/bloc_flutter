@@ -9,6 +9,7 @@ enum CounterEvent {
 
 class CounterBloc extends Bloc<CounterEvent, int> {
 
+
   @override
   int get initialState => 0;
 
@@ -22,5 +23,9 @@ class CounterBloc extends Bloc<CounterEvent, int> {
         yield currentState - 1;
         break;
     }
+  }
+
+  CounterBloc() {
+    print("Construct CounterBloc");
   }
 }
