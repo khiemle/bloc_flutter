@@ -1,5 +1,7 @@
-import 'dart:async';
+import 'package:bloc_demo/counter_bloc.dart';
+import 'package:bloc_demo/simple_bloc_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,19 +47,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  StreamController<int> _counterStream = StreamController<int>();
+  CounterBloc counterBloc;
 
-  void _incrementCounter() {
-    _counterStream.sink.add(++_counter);
+  _MyHomePageState() {
+    BlocSupervisor().delegate = SimpleBlocDelegate();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _counterStream.close();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
+    if (counterBloc == null) {
+      counterBloc = CounterBloc();
+    }
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -97,8 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             new StreamBuilder(
-                stream: _counterStream.stream,
-                initialData: 0,
+                stream: counterBloc.state,
+                initialData: counterBloc.initialState,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   return Text(
                     '${snapshot.data}',
@@ -109,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => counterBloc.dispatch(CounterEvent.increment),
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
