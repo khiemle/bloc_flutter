@@ -1,8 +1,8 @@
 import 'package:bloc_demo/blocs/counter_bloc.dart';
-import 'package:bloc_demo/blocs/infinite_list_bloc.dart';
+import 'package:bloc_demo/blocs/characters_list_bloc.dart';
 import 'package:bloc_demo/presentation/counter_page.dart';
 import 'package:bloc_demo/blocs/simple_bloc_delegate.dart';
-import 'package:bloc_demo/presentation/infinite_page.dart';
+import 'package:bloc_demo/presentation/characters_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,12 +30,12 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-enum ScreenName {Counter, InfiniteList}
+enum ScreenName {Counter, CharactersList}
 
 class _MyHomePageState extends State<MyHomePage> {
 
   CounterBloc counterBloc;
-  InfiniteListBloc infiniteListBloc;
+  CharactersListBloc charactersListBloc;
   var currentScreen = ScreenName.Counter;
 
   Bloc getCurrentBloc() {
@@ -43,9 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case ScreenName.Counter:
         if (counterBloc == null) counterBloc = CounterBloc();
         return counterBloc;
-      case ScreenName.InfiniteList:
-        if (infiniteListBloc == null) infiniteListBloc = InfiniteListBloc();
-        return infiniteListBloc;
+      case ScreenName.CharactersList:
+        if (charactersListBloc == null) charactersListBloc = CharactersListBloc();
+        return charactersListBloc;
     }
     return null;
   }
@@ -54,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (currentScreen) {
       case ScreenName.Counter:
         return CounterPage();
-      case ScreenName.InfiniteList:
-        return InfinitePage();
+      case ScreenName.CharactersList:
+        return CharactersListPage();
     }
     return null;
   }
@@ -85,10 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               ListTile(
-                title: Text('Infinite List'),
+                title: Text('Characters List'),
                 onTap: () {
                   setState(() {
-                    currentScreen = ScreenName.InfiniteList;
+                    currentScreen = ScreenName.CharactersList;
                   });
                   Navigator.pop(context);
                 },

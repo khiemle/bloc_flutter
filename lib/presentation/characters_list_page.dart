@@ -1,12 +1,12 @@
 import 'package:bloc_demo/blocs/counter_bloc.dart';
-import 'package:bloc_demo/blocs/infinite_list_bloc.dart';
+import 'package:bloc_demo/blocs/characters_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InfinitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final infiniteListBloc = BlocProvider.of(context) as InfiniteListBloc;
+    final infiniteListBloc = BlocProvider.of(context) as CharactersListBloc;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
