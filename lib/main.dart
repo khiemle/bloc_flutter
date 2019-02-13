@@ -1,8 +1,8 @@
 import 'package:bloc_demo/blocs/counter_bloc.dart';
-import 'package:bloc_demo/blocs/characters_list_bloc.dart';
+import 'package:bloc_demo/blocs/characters_bloc.dart';
 import 'package:bloc_demo/presentation/counter_page.dart';
 import 'package:bloc_demo/blocs/simple_bloc_delegate.dart';
-import 'package:bloc_demo/presentation/characters_list_page.dart';
+import 'package:bloc_demo/presentation/characters_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ enum ScreenName {Counter, CharactersList}
 class _MyHomePageState extends State<MyHomePage> {
 
   CounterBloc counterBloc;
-  CharactersListBloc charactersListBloc;
+  CharactersBloc charactersListBloc;
   var currentScreen = ScreenName.Counter;
 
   Bloc getCurrentBloc() {
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (counterBloc == null) counterBloc = CounterBloc();
         return counterBloc;
       case ScreenName.CharactersList:
-        if (charactersListBloc == null) charactersListBloc = CharactersListBloc();
+        if (charactersListBloc == null) charactersListBloc = CharactersBloc();
         return charactersListBloc;
     }
     return null;
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case ScreenName.Counter:
         return CounterPage();
       case ScreenName.CharactersList:
-        return CharactersListPage();
+        return CharactersPage();
     }
     return null;
   }
