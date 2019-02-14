@@ -1,5 +1,6 @@
 import 'package:bloc_demo/blocs/counter_bloc.dart';
 import 'package:bloc_demo/blocs/characters_bloc.dart';
+import 'package:bloc_demo/presentation/characters_grid_page.dart';
 import 'package:bloc_demo/presentation/counter_page.dart';
 import 'package:bloc_demo/blocs/simple_bloc_delegate.dart';
 import 'package:bloc_demo/presentation/characters_page.dart';
@@ -30,7 +31,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-enum ScreenName {Counter, CharactersList}
+enum ScreenName {Counter, CharactersList, CharactersGrid}
 
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -46,6 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case ScreenName.CharactersList:
         if (charactersListBloc == null) charactersListBloc = CharactersBloc();
         return charactersListBloc;
+      case ScreenName.CharactersGrid:
+        if (charactersListBloc == null) charactersListBloc = CharactersBloc();
+        return charactersListBloc;
     }
     return null;
   }
@@ -56,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         return CounterPage();
       case ScreenName.CharactersList:
         return CharactersPage();
+      case ScreenName.CharactersGrid:
+        return CharactersGridPage();
     }
     return null;
   }
@@ -89,6 +95,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   setState(() {
                     currentScreen = ScreenName.CharactersList;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Characters Grid'),
+                onTap: () {
+                  setState(() {
+                    currentScreen = ScreenName.CharactersGrid;
                   });
                   Navigator.pop(context);
                 },
