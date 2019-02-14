@@ -6,31 +6,54 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bloc_demo/data/models/Hero.dart' as Marvel;
 
-class CharactersPage extends StatelessWidget {
+class CharactersPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => CharactersPageState();
+}
+
+class CharactersPageState extends State<CharactersPage> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  CharactersBloc charactersBloc;
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      charactersBloc.dispatch(Fetch());
+    }
+  }
+
+  CharactersPageState() {
+    _scrollController.addListener(_onScroll);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final charactersBloc = BlocProvider.of(context) as CharactersBloc;
+    charactersBloc = BlocProvider.of(context) as CharactersBloc;
+    charactersBloc.dispatch(Fetch());
     return Center(
-      child:StreamBuilder(
+      child: StreamBuilder(
           stream: charactersBloc.state,
           initialData: charactersBloc.initialState,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             final characterState = snapshot.data as CharactersState;
-            if (characterState is Error || characterState is Uninitialized) {
+            if (characterState is Uninitialized) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (characterState is Error) {
               return Column(
                 children: <Widget>[
                   Text(
                     '${characterState.toString()}',
                     style: Theme.of(context).textTheme.display1,
-                  ),
-                  RaisedButton(
-                    child: Text("Request"),
-                   onPressed: () => charactersBloc.dispatch(Fetch()),
                   )
                 ],
               );
             } else {
-              return _buildHeroesList(context, (snapshot.data as Loaded).heroes);
+              return _buildHeroesList(
+                  context, (snapshot.data as Loaded).heroes);
             }
           }),
     );
@@ -65,15 +88,17 @@ class CharactersPage extends StatelessWidget {
                   width: rightWidth,
                   child: RichText(
                     text: TextSpan(
-                        text:hero.name,
-                        style: new TextStyle(fontWeight: FontWeight.bold,
+                        text: hero.name,
+                        style: new TextStyle(
+                            fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                            fontSize: 18, decoration: TextDecoration.underline),
+                            fontSize: 18,
+                            decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            launch("${hero.resourceURI}${MarvelUtils.generateKeys()}");
-                          }
-                    ),
+                            launch(
+                                "${hero.resourceURI}${MarvelUtils.generateKeys()}");
+                          }),
                   ),
                 ),
                 Container(
@@ -91,13 +116,15 @@ class CharactersPage extends StatelessWidget {
     }
 
     return ListView.separated(
-        padding: const EdgeInsets.all(16.0),
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          color: Colors.black87,
-        ),
-        itemCount: list.length,
-        itemBuilder: (context, i) {
-          return _buildRow(list[i]);
-        });
+      padding: const EdgeInsets.all(16.0),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+            color: Colors.black87,
+          ),
+      itemCount: list.length,
+      itemBuilder: (context, i) {
+        return _buildRow(list[i]);
+      },
+      controller: _scrollController,
+    );
   }
 }
