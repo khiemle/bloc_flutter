@@ -4,6 +4,7 @@ import 'package:bloc_demo/data/IMarvelRepository.dart';
 import 'package:bloc_demo/data/RemoteMarvelRepository.dart';
 import 'package:bloc_demo/data/models/Hero.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class CharactersEvent extends Equatable {}
 
@@ -46,6 +47,12 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   CharactersBloc() {
     print("Construct InfiniteListBloc");
     marvelRepository = RemoteMarvelRepository();
+  }
+
+
+  @override
+  Stream<CharactersEvent> transform(Stream<CharactersEvent> events) {
+    return (events as Observable<CharactersEvent>).debounce(Duration(milliseconds: 500));
   }
 
   @override
