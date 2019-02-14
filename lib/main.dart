@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: MyHomePage(),
     );
@@ -76,9 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('BLoC Demo'),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                    child: Text('BLoC Demo', style: TextStyle(
+                      color: Colors.white,
+                    ),)
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.grey,
+                  boxShadow:  kElevationToShadow[6]
                 ),
               ),
               ListTile(
