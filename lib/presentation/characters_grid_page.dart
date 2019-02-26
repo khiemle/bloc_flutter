@@ -1,4 +1,5 @@
 import 'package:bloc_demo/blocs/characters_bloc.dart';
+import 'package:bloc_demo/presentation/character_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_demo/data/models/Hero.dart' as Marvel;
@@ -56,21 +57,29 @@ class CharactersGridPageState extends State<CharactersGridPage> {
     );
   }
 
+
+  openHeroPage(Marvel.Hero hero) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterPage(hero)));
+  }
+
   Widget _buildHeroesList(BuildContext context, List<Marvel.Hero> list) {
     Widget _buildCard(Marvel.Hero hero) {
       double itemWidth = MediaQuery.of(context).size.width * 0.5;
       return GestureDetector(
-          onTap: () => {},
+          onTap: () => openHeroPage(hero),
           child: Stack(children: <Widget>[
-            Container(
-                width: itemWidth,
-                height: itemWidth,
-                decoration: new BoxDecoration(
-                    boxShadow: kElevationToShadow[6],
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(hero.thumbnail.getPortraitUrl())))),
+            Hero(
+              tag: 'image${hero.id}',
+              child: Container(
+                  width: itemWidth,
+                  height: itemWidth,
+                  decoration: new BoxDecoration(
+                      boxShadow: kElevationToShadow[6],
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(hero.thumbnail.getPortraitUrl())))),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

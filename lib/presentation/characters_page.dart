@@ -1,4 +1,5 @@
 import 'package:bloc_demo/blocs/characters_bloc.dart';
+import 'package:bloc_demo/presentation/character_page.dart';
 import 'package:bloc_demo/utils/MarvelUtils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,16 @@ class CharactersPageState extends State<CharactersPage> {
     );
   }
 
+  openHeroPage(Marvel.Hero hero) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterPage(hero)));
+  }
+
   Widget _buildHeroesList(BuildContext context, List<Marvel.Hero> list) {
     Widget _buildRow(Marvel.Hero hero) {
       double leftWidth = MediaQuery.of(context).size.width * 0.25;
       double rightWidth = MediaQuery.of(context).size.width * 0.6;
       return GestureDetector(
-        onTap: () => {},
+        onTap: () => openHeroPage(hero),
         child: Row(
           children: <Widget>[
             Padding(
