@@ -4,12 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_demo/data/models/Hero.dart' as Marvel;
 
-class CharactersGridPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => CharactersGridPageState();
-}
-
-class CharactersGridPageState extends State<CharactersGridPage> {
+class CharactersGridPage extends StatelessWidget {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   CharactersBloc charactersBloc;
@@ -22,7 +17,7 @@ class CharactersGridPageState extends State<CharactersGridPage> {
     }
   }
 
-  CharactersGridPageState() {
+  CharactersGridPage() {
     _scrollController.addListener(_onScroll);
   }
 
@@ -58,7 +53,7 @@ class CharactersGridPageState extends State<CharactersGridPage> {
   }
 
 
-  openHeroPage(Marvel.Hero hero) {
+  openHeroPage(BuildContext context, Marvel.Hero hero) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterPage(hero)));
   }
 
@@ -66,7 +61,7 @@ class CharactersGridPageState extends State<CharactersGridPage> {
     Widget _buildCard(Marvel.Hero hero) {
       double itemWidth = MediaQuery.of(context).size.width * 0.5;
       return GestureDetector(
-          onTap: () => openHeroPage(hero),
+          onTap: () => openHeroPage(context, hero),
           child: Stack(children: <Widget>[
             Hero(
               tag: 'image${hero.id}',

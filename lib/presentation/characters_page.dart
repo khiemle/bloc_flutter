@@ -7,12 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bloc_demo/data/models/Hero.dart' as Marvel;
 
-class CharactersPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => CharactersPageState();
-}
-
-class CharactersPageState extends State<CharactersPage> {
+class CharactersPage extends StatelessWidget {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   CharactersBloc charactersBloc;
@@ -25,7 +20,7 @@ class CharactersPageState extends State<CharactersPage> {
     }
   }
 
-  CharactersPageState() {
+  CharactersPage() {
     _scrollController.addListener(_onScroll);
   }
 
@@ -60,7 +55,7 @@ class CharactersPageState extends State<CharactersPage> {
     );
   }
 
-  openHeroPage(Marvel.Hero hero) {
+  openHeroPage(BuildContext context, Marvel.Hero hero) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterPage(hero)));
   }
 
@@ -69,7 +64,7 @@ class CharactersPageState extends State<CharactersPage> {
       double leftWidth = MediaQuery.of(context).size.width * 0.25;
       double rightWidth = MediaQuery.of(context).size.width * 0.6;
       return GestureDetector(
-        onTap: () => openHeroPage(hero),
+        onTap: () => openHeroPage(context, hero),
         child: Row(
           children: <Widget>[
             Padding(
